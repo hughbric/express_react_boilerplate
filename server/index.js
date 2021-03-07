@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -36,12 +36,14 @@ app.use(limiter);
 
 app.get('/api/about', (req, res) => {
   res.json({
-    message: 'Hello Stranger! How are you?',
+    message: 'Hello from the server.',
   });
 });
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  res
+    .set('Content-Security-Policy', "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'")
+    .sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 const port = process.env.PORT ||8080;

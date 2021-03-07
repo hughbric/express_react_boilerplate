@@ -1,4 +1,3 @@
-
 # OS X
 .DS_Store*
 Icon?
@@ -19,3 +18,4 @@ benchmarks/graphs
 # Logs
 logs
 *.log
+build
