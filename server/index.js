@@ -13,6 +13,9 @@ const limiter = rateLimit({
 
 const app = express();
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // Serve Favicon
 app.use(favicon(path.join(__dirname, '../client/public', 'favicon.ico')))
 
@@ -35,14 +38,20 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(limiter);
 
-// Port
-const port = 8080;
-
 app.get('/', (req, res) => {
   res.json({
     message: 'Hello Stranger! How are you?',
   });
 });
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
+// Port
+const port = process.env.PORT ||8080;
 
 // Listen
 app.listen(port, ()=>{
